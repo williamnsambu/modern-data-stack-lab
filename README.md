@@ -1,4 +1,4 @@
-# modern-data-stack-lab
+# Modern Data Stack Lab
 
 This project is an end-to-end data engineering and analytics lab built on the modern data stack. It demonstrates how to ingest, transform, and visualize data using industry-standard tools like Databricks, Snowflake, dbt, and BI visualization platforms.
 
