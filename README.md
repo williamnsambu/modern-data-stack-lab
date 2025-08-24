@@ -9,6 +9,7 @@ A collection of end-to-end data engineering and analytics projects showcasing sk
 1. NYC Taxi Analytics (dbt + Postgres)
 
 Tech: dbt, PostgreSQL, GitHub Actions (optional CI), VS Code Power User extension
+
 	•	Problem: NYC taxi data is large and messy (millions of rows, multiple schemas).
 	•	Goal: Transform raw taxi trips into clean, analytics-ready marts for insights like revenue, trip volume, and airport traffic.
 	•	Highlights:
@@ -23,6 +24,7 @@ Tech: dbt, PostgreSQL, GitHub Actions (optional CI), VS Code Power User extensio
 2. Databricks Lakehouse Project (coming soon)
 
 Tech: Databricks, Delta Lake, PySpark
+
 	•	Focus on ingesting raw JSON/Parquet data into a bronze-silver-gold pipeline.
 	•	Demonstrates Delta Lake merges, deletes, and time travel.
 	•	Will include feature engineering with PySpark.
@@ -34,6 +36,7 @@ Tech: Databricks, Delta Lake, PySpark
 3. Azure Data Engineering Project (coming soon)
 
 Tech: Azure Data Factory, Synapse, Fabric, Event Hubs
+
 	•	Event-driven ETL pipelines with ADF + Synapse.
 	•	Real-time ingestion with Event Hubs → CosmosDB → Synapse Link.
 	•	Cost optimization & monitoring with Application Insights.
@@ -45,6 +48,7 @@ Tech: Azure Data Factory, Synapse, Fabric, Event Hubs
 4. AWS Data Engineering Project (coming soon)
 
 Tech: AWS Glue, Redshift, S3, Lambda, Kinesis
+
 	•	Serverless ETL with Glue + Lambda.
 	•	Real-time streaming ingestion with Kinesis → S3 → Redshift.
 	•	Data Lakehouse architecture on S3 with partitioning & lifecycle policies.
@@ -56,6 +60,7 @@ Tech: AWS Glue, Redshift, S3, Lambda, Kinesis
 5. Snowflake Data Warehouse Project (coming soon)
 
 Tech: Snowflake, dbt, Airflow
+
 	•	Building a cloud-native data warehouse with Snowflake.
 	•	Orchestration and scheduling via Airflow.
 	•	Showcases Snowflake features: zero-copy cloning, streams & tasks, and time travel.
@@ -65,6 +70,7 @@ Tech: Snowflake, dbt, Airflow
 ⸻
 
 📊 Roadmap
+
 	•	dbt NYC Taxi Analytics project
 	•	Databricks Lakehouse project
 	•	Azure Data Engineering pipelines
@@ -78,6 +84,7 @@ Tech: Snowflake, dbt, Airflow
 🛠️ Setup Instructions (for dbt project)
 
 Requirements
+
 	•	Python 3.11+
 	•	dbt-core & dbt-postgres
 	•	PostgreSQL running locally (or Docker)
