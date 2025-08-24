@@ -1,0 +1,11 @@
+version: 2
+
+sources:
+  - name: raw
+    schema: raw
+    description: "Raw NYC TLC data loaded into Postgres."
+    tables:
+      - name: taxi_trips_yellow
+        description: "Yellow cab trip records (e.g., Jan 2025)."
+      - name: taxi_zones
+        description: "Taxi zone lookup table from TLC."

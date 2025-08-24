@@ -1,0 +1,24 @@
+name: 'nyc_taxi_analytics'
+version: '1.0.0'
+config-version: 2
+profile: 'nyc_taxi_analytics'
+
+model-paths: ['models']
+test-paths: ['tests']
+seed-paths: ['seeds']
+macro-paths: ['macros']
+snapshot-paths: ['snapshots']
+
+models:
+  +materialized: view
+
+  nyc_taxi_analytics:
+    staging:
+      +schema: analytics_stg
+      +materialized: view
+    intermediate:
+      +schema: analytics_int
+      +materialized: view
+    marts:
+      +schema: analytics_mart
+      +materialized: table

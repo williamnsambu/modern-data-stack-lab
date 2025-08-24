@@ -1,0 +1,30 @@
+[0m16:26:16.318554 [debug] [MainThread]: Sending event: {'category': 'dbt', 'action': 'invocation', 'label': 'start', 'context': [<snowplow_tracker.self_describing_json.SelfDescribingJson object at 0x110d2b150>, <snowplow_tracker.self_describing_json.SelfDescribingJson object at 0x110f1cad0>, <snowplow_tracker.self_describing_json.SelfDescribingJson object at 0x110f1cb10>]}
+
+
+============================== 16:26:16.320741 | 3268ed3a-ccfa-42ed-8b9f-b11c5a0e1b48 ==============================
+[0m16:26:16.320741 [info ] [MainThread]: Running with dbt=1.10.9
+[0m16:26:16.321032 [debug] [MainThread]: running dbt with arguments {'no_print': 'None', 'profiles_dir': '/Users/williamnsambu/.dbt', 'indirect_selection': 'eager', 'static_parser': 'True', 'fail_fast': 'False', 'debug': 'False', 'send_anonymous_usage_stats': 'True', 'introspect': 'True', 'warn_error_options': 'WarnErrorOptionsV2(error=[], warn=[], silence=[])', 'use_colors': 'True', 'use_experimental_parser': 'False', 'cache_selected_only': 'False', 'version_check': 'True', 'printer_width': '80', 'warn_error': 'None', 'partial_parse': 'True', 'invocation_command': 'dbt init nyc_taxi_analytics', 'write_json': 'True', 'log_format': 'default', 'target_path': 'None', 'log_path': 'logs', 'quiet': 'False', 'empty': 'None', 'log_cache_events': 'False'}
+[0m16:26:16.325409 [debug] [MainThread]: Starter project path: /Users/williamnsambu/Documents/Dev/professional-advencement/data-projects/repo/modern-data-stack-lab/dbt-project/.venv/lib/python3.11/site-packages/dbt/include/starter_project
+[0m16:26:16.328372 [info ] [MainThread]: 
+Your new dbt project "nyc_taxi_analytics" was created!
+
+For more information on how to configure the profiles.yml file,
+please consult the dbt documentation here:
+
+  https://docs.getdbt.com/docs/configure-your-profile
+
+One more thing:
+
+Need help? Don't hesitate to reach out to us via GitHub issues or on Slack:
+
+  https://community.getdbt.com/
+
+Happy modeling!
+
+[0m16:26:16.328561 [info ] [MainThread]: Setting up your profile.
+[0m16:35:46.148618 [info ] [MainThread]: Profile nyc_taxi_analytics written to /Users/williamnsambu/.dbt/profiles.yml using target's profile_template.yml and your supplied values. Run 'dbt debug' to validate the connection.
+[0m16:35:46.160327 [debug] [MainThread]: Resource report: {"command_name": "init", "command_success": true, "command_wall_clock_time": 570.06006, "process_in_blocks": "0", "process_kernel_time": 0.149765, "process_mem_max_rss": "108625920", "process_out_blocks": "0", "process_user_time": 0.635041}
+[0m16:35:46.161442 [debug] [MainThread]: Command `dbt init` succeeded at 16:35:46.161152 after 570.06 seconds
+[0m16:35:46.162571 [debug] [MainThread]: Sending event: {'category': 'dbt', 'action': 'invocation', 'label': 'end', 'context': [<snowplow_tracker.self_describing_json.SelfDescribingJson object at 0x1110979d0>, <snowplow_tracker.self_describing_json.SelfDescribingJson object at 0x1112eb690>, <snowplow_tracker.self_describing_json.SelfDescribingJson object at 0x103185c50>]}
+[0m16:35:46.163303 [debug] [MainThread]: Flushing usage events
+[0m16:35:46.433049 [debug] [MainThread]: An error was encountered while trying to flush usage events

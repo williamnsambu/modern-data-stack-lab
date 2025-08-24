@@ -1,0 +1,17 @@
+
+target/
+dbt_packages/
+logs/
+dbt_internal_packages/
+# Virtual environment
+.venv/
+
+# dbt build artifacts
+target/
+logs/
+
+# Mac junk
+.DS_Store
+
+# Sensitive profile (keep only example in repo)
+profiles.yml

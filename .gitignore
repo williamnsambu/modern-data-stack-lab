@@ -1,0 +1,21 @@
+# Python venv & caches
+.venv/
+__pycache__/
+*.pyc
+
+# dbt build artifacts
+dbt-project/nyc_taxi_analytics/target/
+dbt-project/nyc_taxi_analytics/logs/
+dbt-project/nyc_taxi_analytics/dbt_packages/
+dbt-project/nyc_taxi_analytics/dbt_internal_packages/
+
+# sensitive configs
+dbt-project/nyc_taxi_analytics/profiles.yml
+dbt-project/nyc_taxi_analytics/.user.yml
+
+# OS junk
+.DS_Store
+
+# optional: keep data folder but exclude heavy raw files
+dbt-project/nyc_taxi_analytics/data/**/*.csv
+dbt-project/nyc_taxi_analytics/data/**/*.parquet
