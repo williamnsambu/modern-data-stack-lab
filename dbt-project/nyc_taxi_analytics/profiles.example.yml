@@ -1,0 +1,14 @@
+nyc_taxi_analytics:
+  target: dev
+  outputs:
+    dev:
+      type: postgres
+      host: localhost      # change if running remote/Postgres Docker
+      port: 5432
+      user: your_user      # replace with your db username
+      password: your_pass  # replace with your db password
+      dbname: nyc_taxi
+      schema: analytics
+      threads: 4
+      connect_timeout: 10
+      search_path: public
