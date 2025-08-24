@@ -1,0 +1,15 @@
+version: 2
+
+exposures:
+  - name: taxi_trips_dashboard
+    type: dashboard
+    maturity: high
+    url: https://example.com/nyc-taxi
+    description: "Trip volume, revenue, airport traffic."
+    owner:
+      name: William Nsambu
+      email: you@example.com
+    depends_on:
+      - ref('fct_trip')
+      - ref('dim_zone')
+    tags: [bi, dashboard]
