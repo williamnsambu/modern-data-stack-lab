@@ -94,6 +94,7 @@ Run Locally
 # Clone repo
 
 git clone https://github.com/williamnsambu/modern-data-stack-lab.git
+
 cd modern-data-stack-lab/dbt-project/nyc_taxi_analytics
 
 # Create virtual env
