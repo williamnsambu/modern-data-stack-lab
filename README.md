@@ -92,6 +92,7 @@ Requirements
 Run Locally
 
 # Clone repo
+
 git clone https://github.com/williamnsambu/modern-data-stack-lab.git
 cd modern-data-stack-lab/dbt-project/nyc_taxi_analytics
 
@@ -124,6 +125,5 @@ This is a personal lab/portfolio, but feel free to open issues or PRs with sugge
 
 William Nsambu
 Software & Data Engineer | Cloud Solutions | Modern Data Stack Enthusiast
-🌐 LinkedIn: www.linkedin.com/in/william-nsambu-a5467ab2 | 💻 GitHub: https://github.com/williamnsambu
 
-⸻
+🌐 LinkedIn: www.linkedin.com/in/william-nsambu-a5467ab2 | 💻 GitHub: https://github.com/williamnsambu
