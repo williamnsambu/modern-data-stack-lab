@@ -4,7 +4,7 @@ A collection of end-to-end data engineering and analytics projects showcasing sk
 
 ⸻
 
-📂 Projects
+Projects
 
 1. NYC Taxi Analytics (dbt + Postgres)
 
@@ -19,7 +19,7 @@ Tech: dbt, PostgreSQL, GitHub Actions (optional CI), VS Code Power User extensio
 	•	Exposures defined for a dashboard dependency graph
 	•	DAG lineage visualized via dbt Docs
 
-📂 Folder: dbt-project/nyc_taxi_analytics
+Folder: dbt-project/nyc_taxi_analytics
 
 2. Databricks Lakehouse Project (coming soon)
 
@@ -29,7 +29,7 @@ Tech: Databricks, Delta Lake, PySpark
 	•	Demonstrates Delta Lake merges, deletes, and time travel.
 	•	Will include feature engineering with PySpark.
 
-📂 Folder: databricks-lakehouse (planned)
+Folder: databricks-lakehouse (planned)
 
 ⸻
 
@@ -41,7 +41,7 @@ Tech: Azure Data Factory, Synapse, Fabric, Event Hubs
 	•	Real-time ingestion with Event Hubs → CosmosDB → Synapse Link.
 	•	Cost optimization & monitoring with Application Insights.
 
-📂 Folder: azure-etl (planned)
+Folder: azure-etl (planned)
 
 ⸻
 
@@ -53,7 +53,7 @@ Tech: AWS Glue, Redshift, S3, Lambda, Kinesis
 	•	Real-time streaming ingestion with Kinesis → S3 → Redshift.
 	•	Data Lakehouse architecture on S3 with partitioning & lifecycle policies.
 
-📂 Folder: aws-etl (planned)
+Folder: aws-etl (planned)
 
 ⸻
 
@@ -65,11 +65,11 @@ Tech: Snowflake, dbt, Airflow
 	•	Orchestration and scheduling via Airflow.
 	•	Showcases Snowflake features: zero-copy cloning, streams & tasks, and time travel.
 
-📂 Folder: snowflake-dwh (planned)
+Folder: snowflake-dwh (planned)
 
 ⸻
 
-📊 Roadmap
+Roadmap
 
 	•	dbt NYC Taxi Analytics project
 	•	Databricks Lakehouse project
@@ -81,7 +81,7 @@ Tech: Snowflake, dbt, Airflow
 
 ⸻ 
 
-🛠️ Setup Instructions (for dbt project)
+Setup Instructions (for dbt project)
 
 Requirements
 
@@ -116,15 +116,15 @@ dbt docs serve
 
 ⸻
 
-🤝 Contributing
+Contributing
 
 This is a personal lab/portfolio, but feel free to open issues or PRs with suggestions.
 
 ⸻
 
-👨‍💻 Author
+Author
 
 William Nsambu
 Software & Data Engineer | Cloud Solutions | Modern Data Stack Enthusiast
 
-🌐 LinkedIn: www.linkedin.com/in/william-nsambu-a5467ab2 | 💻 GitHub: https://github.com/williamnsambu
+LinkedIn: www.linkedin.com/in/william-nsambu-a5467ab2 | GitHub: https://github.com/williamnsambu
