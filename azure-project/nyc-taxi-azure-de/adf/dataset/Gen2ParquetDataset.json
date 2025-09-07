@@ -1,5 +1,5 @@
 {
-	"name": "Gen2ParquetSourceDataset",
+	"name": "Gen2ParquetDataset",
 	"properties": {
 		"linkedServiceName": {
 			"referenceName": "ADLSGen2",

@@ -40,13 +40,29 @@
 									"type": "DataFlowReference",
 									"datasetParameters": {
 										"YellowTaxiDataSource": {
-											"containerName": "landing",
-											"folderName": "nyc/taxi/yellow"
+											"containerName": {
+												"value": "@variables('sourceContainerName')",
+												"type": "Expression"
+											},
+											"folderName": {
+												"value": "@variables('sourceFolderName')",
+												"type": "Expression"
+											}
 										},
 										"CombinedYellowTaxiDataSink": {
-											"containerName": "landing",
-											"folderName": "nyc/taxi/yellow",
-											"fileName": "*.parquet"
+											"containerName": "bronze",
+											"folderName": {
+												"value": "@concat(variables('sourceFolderName'), '/raw')",
+												"type": "Expression"
+											}
+										}
+									},
+									"linkedServiceParameters": {
+										"CombinedYellowTaxiDataSink": {
+											"schemaLinkedService": {
+												"containerName": "landing",
+												"folderName": "nyc/taxi/yellow"
+											}
 										}
 									}
 								},
@@ -88,7 +104,7 @@
 						}
 					},
 					"dataset": {
-						"referenceName": "Gen2ParquetSourceDataset",
+						"referenceName": "Gen2ParquetDataset",
 						"type": "DatasetReference",
 						"parameters": {
 							"containerName": {

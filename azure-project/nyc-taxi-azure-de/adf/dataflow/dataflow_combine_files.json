@@ -6,7 +6,7 @@
 			"sources": [
 				{
 					"dataset": {
-						"referenceName": "Gen2ParquetSourceDataset",
+						"referenceName": "Gen2ParquetDataset",
 						"type": "DatasetReference"
 					},
 					"name": "YellowTaxiDataSource"
@@ -15,7 +15,7 @@
 			"sinks": [
 				{
 					"dataset": {
-						"referenceName": "Gen2ParquetDestinationDataset",
+						"referenceName": "Gen2ParquetDataset",
 						"type": "DatasetReference"
 					},
 					"name": "CombinedYellowTaxiDataSink"
