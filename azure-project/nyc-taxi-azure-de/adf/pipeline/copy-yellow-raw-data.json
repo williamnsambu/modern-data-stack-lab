@@ -58,7 +58,7 @@
 										}
 									},
 									"linkedServiceParameters": {
-										"CombinedYellowTaxiDataSink": {
+										"YellowTaxiDataSource": {
 											"schemaLinkedService": {
 												"containerName": "landing",
 												"folderName": "nyc/taxi/yellow"

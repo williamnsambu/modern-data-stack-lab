@@ -13,9 +13,6 @@
 			"folderName": {
 				"type": "string",
 				"defaultValue": "nyc/taxi/yellow"
-			},
-			"fileName": {
-				"type": "string"
 			}
 		},
 		"annotations": [],
@@ -23,10 +20,6 @@
 		"typeProperties": {
 			"location": {
 				"type": "AzureBlobFSLocation",
-				"fileName": {
-					"value": "@dataset().fileName",
-					"type": "Expression"
-				},
 				"folderPath": {
 					"value": "@dataset().folderName",
 					"type": "Expression"
@@ -36,7 +29,7 @@
 					"type": "Expression"
 				}
 			},
-			"compressionCodec": "snappy"
+			"compressionCodec": "none"
 		},
 		"schema": []
 	}
