@@ -1,0 +1,45 @@
+{
+	"name": "dataflow_combine_files",
+	"properties": {
+		"type": "MappingDataFlow",
+		"typeProperties": {
+			"sources": [
+				{
+					"dataset": {
+						"referenceName": "Gen2ParquetSourceDataset",
+						"type": "DatasetReference"
+					},
+					"name": "YellowTaxiDataSource"
+				}
+			],
+			"sinks": [
+				{
+					"dataset": {
+						"referenceName": "Gen2ParquetDestinationDataset",
+						"type": "DatasetReference"
+					},
+					"name": "CombinedYellowTaxiDataSink"
+				}
+			],
+			"transformations": [],
+			"scriptLines": [
+				"source(allowSchemaDrift: true,",
+				"     validateSchema: false,",
+				"     inferDriftedColumnTypes: true,",
+				"     limit: 100,",
+				"     ignoreNoFilesFound: false,",
+				"     purgeFiles: true,",
+				"     format: 'parquet',",
+				"     wildcardPaths:['*.parquet']) ~> YellowTaxiDataSource",
+				"YellowTaxiDataSource sink(allowSchemaDrift: true,",
+				"     validateSchema: false,",
+				"     format: 'parquet',",
+				"     umask: 0022,",
+				"     preCommands: [],",
+				"     postCommands: [],",
+				"     skipDuplicateMapInputs: true,",
+				"     skipDuplicateMapOutputs: true) ~> CombinedYellowTaxiDataSink"
+			]
+		}
+	}
+}
