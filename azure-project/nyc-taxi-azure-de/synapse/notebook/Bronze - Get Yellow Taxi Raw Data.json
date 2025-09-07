@@ -20,7 +20,7 @@
 				"spark.dynamicAllocation.enabled": "true",
 				"spark.dynamicAllocation.minExecutors": "1",
 				"spark.dynamicAllocation.maxExecutors": "4",
-				"spark.autotune.trackingId": "c2ade7cc-ae61-403a-9080-d131ea1ad4e2"
+				"spark.autotune.trackingId": "94c4eca9-d3c8-47ec-a8f7-ca90eec4cfeb"
 			}
 		},
 		"metadata": {
@@ -167,7 +167,7 @@
 					"# Parameters\n",
 					"api_url_base = \"https://data.cityofnewyork.us/resource/t29m-gskq.json\"\n",
 					"limit = 1000\n",
-					"max_records = 5000\n",
+					"max_records = 2000 # for the sake of the demo\n",
 					"\n",
 					"# Landing and Bronze paths (in ADLS using Linked Service)\n",
 					"landing_path = \"abfss://landing@assportfolio.dfs.core.windows.net/nyc/taxi/yellow/raw/\"\n",
