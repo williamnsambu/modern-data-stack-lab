@@ -1,0 +1,282 @@
+{
+	"name": "Bronze - Get Yellow Taxi Raw Data",
+	"properties": {
+		"folder": {
+			"name": "nyc"
+		},
+		"nbformat": 4,
+		"nbformat_minor": 2,
+		"bigDataPool": {
+			"referenceName": "aspportfolio",
+			"type": "BigDataPoolReference"
+		},
+		"sessionProperties": {
+			"driverMemory": "28g",
+			"driverCores": 4,
+			"executorMemory": "28g",
+			"executorCores": 4,
+			"numExecutors": 1,
+			"conf": {
+				"spark.dynamicAllocation.enabled": "true",
+				"spark.dynamicAllocation.minExecutors": "1",
+				"spark.dynamicAllocation.maxExecutors": "4",
+				"spark.autotune.trackingId": "bde87ef1-a2de-4028-9c3e-aa441af0aa0c"
+			}
+		},
+		"metadata": {
+			"saveOutput": true,
+			"enableDebugMode": false,
+			"kernelspec": {
+				"name": "synapse_pyspark",
+				"display_name": "Synapse PySpark"
+			},
+			"language_info": {
+				"name": "python"
+			},
+			"a365ComputeOptions": {
+				"id": "/subscriptions/5f52bc63-7e1f-4fb9-8247-347684e13f97/resourceGroups/rg-portfolio/providers/Microsoft.Synapse/workspaces/asa-portfolio/bigDataPools/aspportfolio",
+				"name": "aspportfolio",
+				"type": "Spark",
+				"endpoint": "https://asa-portfolio.dev.azuresynapse.net/livyApi/versions/2019-11-01-preview/sparkPools/aspportfolio",
+				"auth": {
+					"type": "AAD",
+					"authResource": "https://dev.azuresynapse.net"
+				},
+				"sparkVersion": "3.5",
+				"nodeCount": 10,
+				"cores": 4,
+				"memory": 28,
+				"automaticScaleJobs": true
+			},
+			"sessionKeepAliveTimeout": 30
+		},
+		"cells": [
+			{
+				"cell_type": "markdown",
+				"metadata": {
+					"nteract": {
+						"transient": {
+							"deleting": false
+						}
+					}
+				},
+				"source": [
+					"# 🗽 NYC Yellow Taxi Data - Bronze Load\n",
+					"\n",
+					"This notebook loads the **NYC Yellow Taxi** data from the [NYC Open Data API](https://data.cityofnewyork.us/resource/t29m-gskq.json), paginates through the results (1000 rows at a time), and stores it in **Parquet format** into the **bronze** layer of the data lake.\n",
+					"\n",
+					"**Target Path**: `abfss://bronze@assportfolio.dfs.core.windows.net/nyc/taxi/yellow/raw/`"
+				]
+			},
+			{
+				"cell_type": "markdown",
+				"metadata": {
+					"nteract": {
+						"transient": {
+							"deleting": false
+						}
+					}
+				},
+				"source": [
+					"## Import Libraries"
+				]
+			},
+			{
+				"cell_type": "code",
+				"source": [
+					"import requests\n",
+					"import pandas as pd\n",
+					"from pyspark.sql import SparkSession\n",
+					"from pyspark.sql.types import StructType\n",
+					"import json\n",
+					"import logging"
+				],
+				"execution_count": 8
+			},
+			{
+				"cell_type": "markdown",
+				"metadata": {
+					"nteract": {
+						"transient": {
+							"deleting": false
+						}
+					}
+				},
+				"source": [
+					"## Configurations"
+				]
+			},
+			{
+				"cell_type": "markdown",
+				"metadata": {
+					"nteract": {
+						"transient": {
+							"deleting": false
+						}
+					}
+				},
+				"source": [
+					"#### Logger"
+				]
+			},
+			{
+				"cell_type": "code",
+				"source": [
+					"# Configure logging\n",
+					"logger = logging.getLogger(\"YellowTaxiETL\")\n",
+					"logger.setLevel(logging.INFO)\n",
+					"\n",
+					"if not logger.hasHandlers():\n",
+					"    ch = logging.StreamHandler()\n",
+					"    formatter = logging.Formatter(\"%(asctime)s - %(levelname)s - %(message)s\")\n",
+					"    ch.setFormatter(formatter)\n",
+					"    logger.addHandler(ch)\n",
+					"\n",
+					"logger.info(\"Logger initialized.\")"
+				],
+				"execution_count": 9
+			},
+			{
+				"cell_type": "markdown",
+				"metadata": {
+					"nteract": {
+						"transient": {
+							"deleting": false
+						}
+					}
+				},
+				"source": [
+					"## Constants and Parameters"
+				]
+			},
+			{
+				"cell_type": "code",
+				"metadata": {
+					"tags": [
+						"parameters"
+					]
+				},
+				"source": [
+					"# API Endpoint and Parameters\n",
+					"api_url_base = \"https://data.cityofnewyork.us/resource/t29m-gskq.json\"\n",
+					"limit = 1000  # Max rows per request (Socrata API default limit)\n",
+					"max_records = 10000  # Change this based on how much you want to fetch\n",
+					"target_path = \"abfss://bronze@assportfolio.dfs.core.windows.net/nyc/taxi/yellow/raw/\""
+				],
+				"execution_count": 4
+			},
+			{
+				"cell_type": "markdown",
+				"metadata": {
+					"nteract": {
+						"transient": {
+							"deleting": false
+						}
+					}
+				},
+				"source": [
+					"## Helper Functions"
+				]
+			},
+			{
+				"cell_type": "code",
+				"source": [
+					"#  for Pagination\n",
+					"class Helper:\n",
+					"    @staticmethod\n",
+					"    def fetch_paginated_data(api_url, limit=1000, max_records=10000):\n",
+					"        offset = 0\n",
+					"        all_data = []\n",
+					"\n",
+					"        while offset < max_records:\n",
+					"            params = {\n",
+					"                \"$limit\": limit,\n",
+					"                \"$offset\": offset\n",
+					"            }\n",
+					"\n",
+					"            response = requests.get(api_url, params=params)\n",
+					"            if response.status_code != 200:\n",
+					"                raise Exception(f\"API request failed at offset {offset}: {response.text}\")\n",
+					"\n",
+					"            data = response.json()\n",
+					"            if not data:\n",
+					"                break\n",
+					"\n",
+					"            all_data.extend(data)\n",
+					"            offset += limit\n",
+					"\n",
+					"            logger.info(f\"Fetched {len(data)} records... Total so far: {len(all_data)}\")\n",
+					"\n",
+					"        return all_data\n",
+					""
+				],
+				"execution_count": 10
+			},
+			{
+				"cell_type": "markdown",
+				"metadata": {
+					"nteract": {
+						"transient": {
+							"deleting": false
+						}
+					}
+				},
+				"source": [
+					"## Main Process"
+				]
+			},
+			{
+				"cell_type": "markdown",
+				"metadata": {
+					"nteract": {
+						"transient": {
+							"deleting": false
+						}
+					}
+				},
+				"source": [
+					"#### Fetch data"
+				]
+			},
+			{
+				"cell_type": "code",
+				"source": [
+					"# Fetch paginated data from API\n",
+					"raw_data = Helper.fetch_paginated_data(api_url_base, limit=limit, max_records=max_records)\n",
+					"\n",
+					"logger.info(f\"Total records fetched: {len(raw_data)}\")"
+				],
+				"execution_count": 11
+			},
+			{
+				"cell_type": "markdown",
+				"metadata": {
+					"nteract": {
+						"transient": {
+							"deleting": false
+						}
+					}
+				},
+				"source": [
+					"#### Save Data"
+				]
+			},
+			{
+				"cell_type": "code",
+				"source": [
+					"# Convert list of JSON to Pandas DataFrame\n",
+					"df_pd = pd.DataFrame(raw_data)\n",
+					"\n",
+					"# Convert to Spark DataFrame\n",
+					"df_spark = spark.createDataFrame(df_pd)\n",
+					"\n",
+					"# Write to the raw path in bronze container as Parquet\n",
+					"df_spark.write.mode(\"overwrite\").parquet(target_path)\n",
+					"\n",
+					"logger.info(f\"Data written to: {target_path}\")"
+				],
+				"execution_count": null
+			}
+		]
+	}
+}
