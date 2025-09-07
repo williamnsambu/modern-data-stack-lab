@@ -20,7 +20,7 @@
 				"spark.dynamicAllocation.enabled": "true",
 				"spark.dynamicAllocation.minExecutors": "1",
 				"spark.dynamicAllocation.maxExecutors": "4",
-				"spark.autotune.trackingId": "94c4eca9-d3c8-47ec-a8f7-ca90eec4cfeb"
+				"spark.autotune.trackingId": "670f67d6-e13a-4bfe-9ab3-5bca983cc3cc"
 			}
 		},
 		"metadata": {
@@ -98,7 +98,7 @@
 					"import json\n",
 					"import logging"
 				],
-				"execution_count": 19
+				"execution_count": 24
 			},
 			{
 				"cell_type": "markdown",
@@ -141,7 +141,7 @@
 					"\n",
 					"logger.info(\"Logger initialized.\")"
 				],
-				"execution_count": 20
+				"execution_count": 25
 			},
 			{
 				"cell_type": "markdown",
@@ -173,7 +173,7 @@
 					"landing_path = \"abfss://landing@assportfolio.dfs.core.windows.net/nyc/taxi/yellow/raw/\"\n",
 					"bronze_path = \"abfss://bronze@assportfolio.dfs.core.windows.net/nyc/taxi/yellow/raw/\""
 				],
-				"execution_count": 21
+				"execution_count": 26
 			},
 			{
 				"cell_type": "markdown",
@@ -218,7 +218,7 @@
 					"\n",
 					"        return all_data"
 				],
-				"execution_count": 22
+				"execution_count": 27
 			},
 			{
 				"cell_type": "markdown",
@@ -261,7 +261,7 @@
 					"\n",
 					"logger.info(f\"Data saved to landing as CSV: {landing_path}\")"
 				],
-				"execution_count": 23
+				"execution_count": 28
 			},
 			{
 				"cell_type": "markdown",
@@ -286,6 +286,13 @@
 					"df_landing.write.mode(\"overwrite\").parquet(bronze_path)\n",
 					"\n",
 					"logger.info(f\"Data written to bronze as Parquet: {bronze_path}\")"
+				],
+				"execution_count": null
+			},
+			{
+				"cell_type": "code",
+				"source": [
+					""
 				],
 				"execution_count": null
 			}
