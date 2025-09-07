@@ -20,7 +20,7 @@
 				"spark.dynamicAllocation.enabled": "true",
 				"spark.dynamicAllocation.minExecutors": "1",
 				"spark.dynamicAllocation.maxExecutors": "4",
-				"spark.autotune.trackingId": "670f67d6-e13a-4bfe-9ab3-5bca983cc3cc"
+				"spark.autotune.trackingId": "78aad6da-d2c9-43a1-b7ae-e1aeb82ec4be"
 			}
 		},
 		"metadata": {
@@ -287,7 +287,7 @@
 					"\n",
 					"logger.info(f\"Data written to bronze as Parquet: {bronze_path}\")"
 				],
-				"execution_count": null
+				"execution_count": 29
 			},
 			{
 				"cell_type": "code",
