@@ -1,84 +1,11 @@
 {
-	"name": "copy-yellow-raw-data",
+	"name": "bronze_ingest_yellow_taxi_data_batch",
 	"properties": {
 		"description": "Copies the NYC yellow cab raw data from the landing to the the bronze raw data folder",
 		"activities": [
 			{
-				"name": "IfContainsAnyFiles",
-				"description": "If any files are found then proceed",
-				"type": "IfCondition",
-				"dependsOn": [
-					{
-						"activity": "LookupTaxiMetadata",
-						"dependencyConditions": [
-							"Succeeded"
-						]
-					}
-				],
-				"userProperties": [],
-				"typeProperties": {
-					"expression": {
-						"value": "@if(greater(activity('LookupTaxiMetadata').output.count, 1), 'trueResult', 'falseResult')",
-						"type": "Expression"
-					},
-					"ifTrueActivities": [
-						{
-							"name": "DfCombineFiles",
-							"type": "ExecuteDataFlow",
-							"dependsOn": [],
-							"policy": {
-								"timeout": "0.12:00:00",
-								"retry": 0,
-								"retryIntervalInSeconds": 30,
-								"secureOutput": false,
-								"secureInput": false
-							},
-							"userProperties": [],
-							"typeProperties": {
-								"dataflow": {
-									"referenceName": "dataflow_combine_files",
-									"type": "DataFlowReference",
-									"datasetParameters": {
-										"YellowTaxiDataSource": {
-											"containerName": {
-												"value": "@variables('sourceContainerName')",
-												"type": "Expression"
-											},
-											"folderName": {
-												"value": "@variables('sourceFolderName')",
-												"type": "Expression"
-											}
-										},
-										"CombinedYellowTaxiDataSink": {
-											"containerName": "bronze",
-											"folderName": {
-												"value": "@concat(variables('sourceFolderName'), '/raw')",
-												"type": "Expression"
-											}
-										}
-									},
-									"linkedServiceParameters": {
-										"YellowTaxiDataSource": {
-											"schemaLinkedService": {
-												"containerName": "landing",
-												"folderName": "nyc/taxi/yellow"
-											}
-										}
-									}
-								},
-								"compute": {
-									"coreCount": 8,
-									"computeType": "General"
-								},
-								"traceLevel": "Fine"
-							}
-						}
-					]
-				}
-			},
-			{
-				"name": "LookupTaxiMetadata",
-				"type": "Lookup",
+				"name": "bronze_ingest_yellow_taxi_data_batch",
+				"type": "SynapseNotebook",
 				"dependsOn": [],
 				"policy": {
 					"timeout": "0.12:00:00",
@@ -89,36 +16,7 @@
 				},
 				"userProperties": [],
 				"typeProperties": {
-					"source": {
-						"type": "ParquetSource",
-						"storeSettings": {
-							"type": "AzureBlobFSReadSettings",
-							"fileListPath": {
-								"value": "@concat(variables('sourceContainerName'), variables('sourceFolderName'))",
-								"type": "Expression"
-							},
-							"enablePartitionDiscovery": false
-						},
-						"formatSettings": {
-							"type": "ParquetReadSettings"
-						}
-					},
-					"dataset": {
-						"referenceName": "Gen2ParquetDataset",
-						"type": "DatasetReference",
-						"parameters": {
-							"containerName": {
-								"value": "@variables('sourceContainerName')",
-								"type": "Expression"
-							},
-							"folderName": {
-								"value": "@variables('sourceFolderName')",
-								"type": "Expression"
-							},
-							"fileName": "none"
-						}
-					},
-					"firstRowOnly": false
+					"snapshot": true
 				}
 			}
 		],
