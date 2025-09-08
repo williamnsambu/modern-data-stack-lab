@@ -1,9 +1,0 @@
-{
-	"name": "bronze_ingest_yellow_taxi_data_batch",
-	"properties": {
-		"folder": {
-			"name": "nyc"
-		},
-		"annotations": []
-	}
-}
