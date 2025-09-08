@@ -1,9 +1,0 @@
-{
-	"name": "adf-portfolio",
-	"location": "eastus",
-	"identity": {
-		"type": "SystemAssigned",
-		"principalId": "f53ea695-e93a-489b-8f4e-e34f5d92a18b",
-		"tenantId": "2ba9001d-d7f9-43a3-a098-6a927ac715ca"
-	}
-}
