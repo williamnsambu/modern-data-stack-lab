@@ -1,0 +1,10 @@
+{
+	"name": "ADLSGen2",
+	"properties": {
+		"annotations": [],
+		"type": "AzureBlobFS",
+		"typeProperties": {
+			"url": "https://assportfolio.dfs.core.windows.net/"
+		}
+	}
+}

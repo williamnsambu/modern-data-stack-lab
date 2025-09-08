@@ -1,0 +1,30 @@
+{
+	"name": "Every_week_trigger",
+	"properties": {
+		"description": "runs once a week on sunday EST",
+		"annotations": [],
+		"runtimeState": "Started",
+		"pipelines": [
+			{
+				"pipelineReference": {
+					"referenceName": "bronze_ingest_yellow_taxi_data_batch",
+					"type": "PipelineReference"
+				}
+			}
+		],
+		"type": "ScheduleTrigger",
+		"typeProperties": {
+			"recurrence": {
+				"frequency": "Week",
+				"interval": 1,
+				"startTime": "2025-09-08T03:11:00",
+				"timeZone": "Eastern Standard Time",
+				"schedule": {
+					"weekDays": [
+						"Sunday"
+					]
+				}
+			}
+		}
+	}
+}
