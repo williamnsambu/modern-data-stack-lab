@@ -1,0 +1,301 @@
+{
+	"name": "bronze_ingest_yellow_taxi_batch",
+	"properties": {
+		"folder": {
+			"name": "nyc"
+		},
+		"nbformat": 4,
+		"nbformat_minor": 2,
+		"bigDataPool": {
+			"referenceName": "aspportfolio",
+			"type": "BigDataPoolReference"
+		},
+		"sessionProperties": {
+			"driverMemory": "28g",
+			"driverCores": 4,
+			"executorMemory": "28g",
+			"executorCores": 4,
+			"numExecutors": 1,
+			"conf": {
+				"spark.dynamicAllocation.enabled": "true",
+				"spark.dynamicAllocation.minExecutors": "1",
+				"spark.dynamicAllocation.maxExecutors": "4",
+				"spark.autotune.trackingId": "ae1e983c-d70e-4076-91c2-d6dc547ffc86"
+			}
+		},
+		"metadata": {
+			"saveOutput": true,
+			"enableDebugMode": false,
+			"kernelspec": {
+				"name": "synapse_pyspark",
+				"display_name": "Synapse PySpark"
+			},
+			"language_info": {
+				"name": "python"
+			},
+			"a365ComputeOptions": {
+				"id": "/subscriptions/5f52bc63-7e1f-4fb9-8247-347684e13f97/resourceGroups/rg-portfolio/providers/Microsoft.Synapse/workspaces/asa-portfolio/bigDataPools/aspportfolio",
+				"name": "aspportfolio",
+				"type": "Spark",
+				"endpoint": "https://asa-portfolio.dev.azuresynapse.net/livyApi/versions/2019-11-01-preview/sparkPools/aspportfolio",
+				"auth": {
+					"type": "AAD",
+					"authResource": "https://dev.azuresynapse.net"
+				},
+				"sparkVersion": "3.5",
+				"nodeCount": 10,
+				"cores": 4,
+				"memory": 28,
+				"automaticScaleJobs": true
+			},
+			"sessionKeepAliveTimeout": 30
+		},
+		"cells": [
+			{
+				"cell_type": "markdown",
+				"metadata": {
+					"nteract": {
+						"transient": {
+							"deleting": false
+						}
+					}
+				},
+				"source": [
+					"# 🚕 NYC Yellow Taxi Data - Landing to Bronze\n",
+					"\n",
+					"This notebook does the following:\n",
+					"\n",
+					"1. Pulls Yellow Taxi data from NYC Open Data API using pagination\n",
+					"2. Saves raw data as CSV into the **landing** container\n",
+					"3. Loads the CSV, transforms to Spark DataFrame\n",
+					"4. Saves it in **Parquet format** into the **bronze** container\n",
+					"\n",
+					"- No local download — all files stay in ADLS Gen2.\n",
+					"- Supports Synapse Linked Service (`ADLSGen2`)."
+				]
+			},
+			{
+				"cell_type": "markdown",
+				"metadata": {
+					"nteract": {
+						"transient": {
+							"deleting": false
+						}
+					}
+				},
+				"source": [
+					"## Import Libraries"
+				]
+			},
+			{
+				"cell_type": "code",
+				"source": [
+					"import os\n",
+					"import requests\n",
+					"import pandas as pd\n",
+					"from pyspark.sql import SparkSession\n",
+					"from pyspark.sql.types import StructType\n",
+					"import json\n",
+					"import logging"
+				],
+				"execution_count": 24
+			},
+			{
+				"cell_type": "markdown",
+				"metadata": {
+					"nteract": {
+						"transient": {
+							"deleting": false
+						}
+					}
+				},
+				"source": [
+					"## Configurations"
+				]
+			},
+			{
+				"cell_type": "markdown",
+				"metadata": {
+					"nteract": {
+						"transient": {
+							"deleting": false
+						}
+					}
+				},
+				"source": [
+					"#### Logger"
+				]
+			},
+			{
+				"cell_type": "code",
+				"source": [
+					"# Configure logging\n",
+					"logger = logging.getLogger(\"YellowTaxiETL\")\n",
+					"logger.setLevel(logging.INFO)\n",
+					"\n",
+					"if not logger.hasHandlers():\n",
+					"    ch = logging.StreamHandler()\n",
+					"    formatter = logging.Formatter(\"%(asctime)s - %(levelname)s - %(message)s\")\n",
+					"    ch.setFormatter(formatter)\n",
+					"    logger.addHandler(ch)\n",
+					"\n",
+					"logger.info(\"Logger initialized.\")"
+				],
+				"execution_count": 25
+			},
+			{
+				"cell_type": "markdown",
+				"metadata": {
+					"nteract": {
+						"transient": {
+							"deleting": false
+						}
+					}
+				},
+				"source": [
+					"## Constants and Parameters"
+				]
+			},
+			{
+				"cell_type": "code",
+				"metadata": {
+					"tags": [
+						"parameters"
+					]
+				},
+				"source": [
+					"# Parameters\n",
+					"api_url_base = \"https://data.cityofnewyork.us/resource/t29m-gskq.json\"\n",
+					"limit = 1000\n",
+					"max_records = 2000 # for the sake of the demo\n",
+					"\n",
+					"# Landing and Bronze paths (in ADLS using Linked Service)\n",
+					"landing_path = \"abfss://landing@assportfolio.dfs.core.windows.net/nyc/taxi/yellow/raw/\"\n",
+					"bronze_path = \"abfss://bronze@assportfolio.dfs.core.windows.net/nyc/taxi/yellow/raw/\""
+				],
+				"execution_count": 26
+			},
+			{
+				"cell_type": "markdown",
+				"metadata": {
+					"nteract": {
+						"transient": {
+							"deleting": false
+						}
+					}
+				},
+				"source": [
+					"## Helper Functions"
+				]
+			},
+			{
+				"cell_type": "code",
+				"source": [
+					"class Helper:\n",
+					"    @staticmethod\n",
+					"    def fetch_paginated_data(api_url, limit=1000, max_records=5000):\n",
+					"        offset = 0\n",
+					"        all_data = []\n",
+					"\n",
+					"        while offset < max_records:\n",
+					"            params = {\n",
+					"                \"$limit\": limit,\n",
+					"                \"$offset\": offset\n",
+					"            }\n",
+					"\n",
+					"            response = requests.get(api_url, params=params)\n",
+					"            if response.status_code != 200:\n",
+					"                raise Exception(f\"API error at offset {offset}: {response.text}\")\n",
+					"\n",
+					"            data = response.json()\n",
+					"            if not data:\n",
+					"                break\n",
+					"\n",
+					"            all_data.extend(data)\n",
+					"            offset += limit\n",
+					"\n",
+					"            logger.info(f\"Fetched {len(data)} records (total: {len(all_data)})\")\n",
+					"\n",
+					"        return all_data"
+				],
+				"execution_count": 27
+			},
+			{
+				"cell_type": "markdown",
+				"metadata": {
+					"nteract": {
+						"transient": {
+							"deleting": false
+						}
+					}
+				},
+				"source": [
+					"## Main Process"
+				]
+			},
+			{
+				"cell_type": "markdown",
+				"metadata": {
+					"nteract": {
+						"transient": {
+							"deleting": false
+						}
+					}
+				},
+				"source": [
+					"#### Fetch data"
+				]
+			},
+			{
+				"cell_type": "code",
+				"source": [
+					"# Fetch and convert to Pandas\n",
+					"raw_data = Helper.fetch_paginated_data(api_url_base, limit=limit, max_records=max_records)\n",
+					"logger.info(f\"Total records fetched: {len(raw_data)}\")\n",
+					"\n",
+					"df_pd = pd.DataFrame(raw_data)\n",
+					"\n",
+					"# Save to CSV in landing container using Spark\n",
+					"spark_df = spark.createDataFrame(df_pd)\n",
+					"spark_df.write.mode(\"overwrite\").csv(landing_path, header=True)\n",
+					"\n",
+					"logger.info(f\"Data saved to landing as CSV: {landing_path}\")"
+				],
+				"execution_count": 28
+			},
+			{
+				"cell_type": "markdown",
+				"metadata": {
+					"nteract": {
+						"transient": {
+							"deleting": false
+						}
+					}
+				},
+				"source": [
+					"#### Read from Landing and Save to Bronze as Parquet"
+				]
+			},
+			{
+				"cell_type": "code",
+				"source": [
+					"# Load from CSV in landing\n",
+					"df_landing = spark.read.option(\"header\", True).csv(landing_path)\n",
+					"\n",
+					"# Write as Parquet to bronze\n",
+					"df_landing.write.mode(\"overwrite\").parquet(bronze_path)\n",
+					"\n",
+					"logger.info(f\"Data written to bronze as Parquet: {bronze_path}\")"
+				],
+				"execution_count": 29
+			},
+			{
+				"cell_type": "code",
+				"source": [
+					""
+				],
+				"execution_count": null
+			}
+		]
+	}
+}
