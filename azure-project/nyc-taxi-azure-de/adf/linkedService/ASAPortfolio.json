@@ -1,0 +1,12 @@
+{
+	"name": "ASAPortfolio",
+	"properties": {
+		"annotations": [],
+		"type": "AzureSynapseArtifacts",
+		"typeProperties": {
+			"endpoint": "https://asa-portfolio.dev.azuresynapse.net",
+			"authentication": "MSI",
+			"workspaceResourceId": "/subscriptions/5f52bc63-7e1f-4fb9-8247-347684e13f97/resourceGroups/rg-portfolio/providers/Microsoft.Synapse/workspaces/asa-portfolio"
+		}
+	}
+}
