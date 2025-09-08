@@ -16,7 +16,55 @@
 				},
 				"userProperties": [],
 				"typeProperties": {
-					"snapshot": true
+					"notebook": {
+						"referenceName": {
+							"value": "bronze_ingest_yellow_taxi_batch",
+							"type": "Expression"
+						},
+						"type": "NotebookReference"
+					},
+					"parameters": {
+						"api_url_base": {
+							"value": "https://data.cityofnewyork.us/resource/t29m-gskq.json",
+							"type": "string"
+						},
+						"limit": {
+							"value": "1000",
+							"type": "int"
+						},
+						"max_records": {
+							"value": "2000",
+							"type": "int"
+						},
+						"landing_path": {
+							"value": {
+								"value": "abfss://landing@assportfolio.dfs.core.windows.net/nyc/taxi/yellow/raw/",
+								"type": "Expression"
+							},
+							"type": "string"
+						},
+						"bronze_path": {
+							"value": "abfss://bronze@assportfolio.dfs.core.windows.net/nyc/taxi/yellow/raw/",
+							"type": "string"
+						}
+					},
+					"snapshot": true,
+					"sparkPool": {
+						"referenceName": {
+							"value": "aspportfolio",
+							"type": "Expression"
+						},
+						"type": "BigDataPoolReference"
+					},
+					"executorSize": "Small",
+					"conf": {
+						"spark.dynamicAllocation.enabled": true
+					},
+					"driverSize": "Small"
+				},
+				"linkedServiceName": {
+					"referenceName": "ASAPortfolio",
+					"type": "LinkedServiceReference"
 				}
 			}
 		],
