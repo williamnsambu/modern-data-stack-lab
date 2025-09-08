@@ -1,5 +1,5 @@
 {
-	"name": "Bronze - Get Yellow Taxi Raw Data",
+	"name": "bronze_ingest_yellow_taxi_batch",
 	"properties": {
 		"folder": {
 			"name": "nyc"
@@ -20,7 +20,7 @@
 				"spark.dynamicAllocation.enabled": "true",
 				"spark.dynamicAllocation.minExecutors": "1",
 				"spark.dynamicAllocation.maxExecutors": "4",
-				"spark.autotune.trackingId": "78aad6da-d2c9-43a1-b7ae-e1aeb82ec4be"
+				"spark.autotune.trackingId": "ae1e983c-d70e-4076-91c2-d6dc547ffc86"
 			}
 		},
 		"metadata": {
