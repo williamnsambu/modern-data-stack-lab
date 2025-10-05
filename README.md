@@ -1,12 +1,24 @@
 # Modern Data Stack Lab
 
-A collection of end-to-end data engineering and analytics projects showcasing skills in dbt, Databricks, Azure, and modern data stack tools. Each project demonstrates solving a real-world problem with production-grade practices.
+A collection of end-to-end data engineering and analytics projects showcasing skills in dbt, Databricks, Azure, and modern data stack tools. Each project demonstrates the solution of a real-world problem using production-grade practices.
 
 ⸻
 
+Roadmap
+
+	•	dbt NYC Taxi Analytics project
+	•	Databricks Lakehouse project
+	•	Azure Data Engineering pipelines
+	•	AWS Data Engineering pipelines
+	•	Snowflake Data Warehouse
+	•	Airflow orchestration example
+	•	Real-time streaming (Kafka, Kinesis, Event Hubs)
+
+⸻ 
+
 Projects
 
-1. NYC Taxi Analytics (dbt + Postgres)
+1. NYC Taxi Analytics (dbt + Postgres) -- Implemented
 
 Tech: dbt, PostgreSQL, GitHub Actions (optional CI), VS Code Power User extension
 
@@ -33,15 +45,15 @@ Folder: databricks-lakehouse (planned)
 
 ⸻
 
-3. Azure Data Engineering Project (coming soon)
+3. Azure Data Engineering Project -- Partially Implemented
 
-Tech: Azure Data Factory, Synapse, Fabric, Event Hubs
+Tech: Azure Data Factory, Synapse, Databricks, Fabric, Event Hubs
 
 	•	Event-driven ETL pipelines with ADF + Synapse.
 	•	Real-time ingestion with Event Hubs → CosmosDB → Synapse Link.
 	•	Cost optimization & monitoring with Application Insights.
 
-Folder: azure-etl (planned)
+Folder: azure-etl (partially implemented)
 
 ⸻
 
@@ -68,18 +80,6 @@ Tech: Snowflake, dbt, Airflow
 Folder: snowflake-dwh (planned)
 
 ⸻
-
-Roadmap
-
-	•	dbt NYC Taxi Analytics project
-	•	Databricks Lakehouse project
-	•	Azure Data Engineering pipelines
-	•	AWS Data Engineering pipelines
-	•	Snowflake Data Warehouse
-	•	Airflow orchestration example
-	•	Real-time streaming (Kafka, Kinesis, Event Hubs)
-
-⸻ 
 
 Setup Instructions (for dbt project)
 
